@@ -1,0 +1,235 @@
+PDL FOR AC-OPTIMAL POWER FLOW: IEEE CASE 57 AND CASE 118 (PANDAPOWER)
+Replicating Results from Park & Van Hentenryck (2022)
+==========================================================================================
+
+Loading pandapower networks...
+Successfully loaded case57 and case118.
+Loading data from pandapower: case57
+Warning: Cost data not found or incomplete. Using random costs.
+Data loaded: 57 buses, 6 generators, 42 loads.
+Base MVA: 100
+Loading data from pandapower: case118
+Warning: Cost data not found or incomplete. Using random costs.
+Data loaded: 118 buses, 53 generators, 99 loads.
+Base MVA: 100
+
+==========================================================================================
+EXPERIMENT 1: IEEE CASE 57
+==========================================================================================
+
+======================================================================
+Running AC-OPF PDL Experiment: IEEE Case 57
+======================================================================
+
+Device: cuda
+Number of buses: 57
+Number of generators: 6
+Number of loads: 42
+
+Generating 25000 training samples...
+Initializing PDL model...
+
+Training until max violation < 0.01 (or max 50 outer iterations)...
+Inner iterations per phase: 250
+----------------------------------------------------------------------
+Iter   1: Cost=$20,034.30, Max Viol=1.149836 pu, ρ=1.00
+Iter   2: Cost=$29,418.98, Max Viol=0.815303 pu, ρ=2.00
+Iter   3: Cost=$33,963.69, Max Viol=0.609344 pu, ρ=4.00
+Iter   4: Cost=$34,649.42, Max Viol=0.553128 pu, ρ=8.00
+Iter   5: Cost=$34,238.30, Max Viol=0.531798 pu, ρ=16.00
+Iter   6: Cost=$34,210.99, Max Viol=0.478774 pu, ρ=32.00
+Iter   7: Cost=$34,138.45, Max Viol=0.461994 pu, ρ=64.00
+Iter   8: Cost=$34,035.52, Max Viol=0.447041 pu, ρ=128.00
+Iter   9: Cost=$34,039.54, Max Viol=0.432382 pu, ρ=256.00
+Iter  10: Cost=$33,895.21, Max Viol=0.414506 pu, ρ=512.00
+Iter  11: Cost=$33,648.50, Max Viol=0.430885 pu, ρ=1024.00
+Iter  12: Cost=$33,823.42, Max Viol=0.428472 pu, ρ=2048.00
+Iter  13: Cost=$33,737.83, Max Viol=0.443841 pu, ρ=4096.00
+Iter  14: Cost=$33,808.18, Max Viol=0.446435 pu, ρ=8192.00
+Iter  15: Cost=$33,635.05, Max Viol=0.429591 pu, ρ=10000.00
+Iter  16: Cost=$33,918.52, Max Viol=0.360628 pu, ρ=10000.00
+Iter  17: Cost=$34,143.76, Max Viol=0.331214 pu, ρ=10000.00
+Iter  18: Cost=$34,432.89, Max Viol=0.328886 pu, ρ=10000.00
+Iter  19: Cost=$34,709.43, Max Viol=0.321438 pu, ρ=10000.00
+Iter  20: Cost=$34,929.57, Max Viol=0.314820 pu, ρ=10000.00
+Iter  21: Cost=$35,104.93, Max Viol=0.314819 pu, ρ=10000.00
+Iter  22: Cost=$35,238.57, Max Viol=0.324201 pu, ρ=10000.00
+Iter  23: Cost=$35,335.44, Max Viol=0.318214 pu, ρ=10000.00
+Iter  24: Cost=$35,387.14, Max Viol=0.322014 pu, ρ=10000.00
+Iter  25: Cost=$35,416.01, Max Viol=0.325058 pu, ρ=10000.00
+Iter  26: Cost=$35,429.99, Max Viol=0.334396 pu, ρ=10000.00
+Iter  27: Cost=$35,427.71, Max Viol=0.321354 pu, ρ=10000.00
+Iter  28: Cost=$35,439.57, Max Viol=0.357222 pu, ρ=10000.00
+Iter  29: Cost=$35,411.63, Max Viol=0.335732 pu, ρ=10000.00
+Iter  30: Cost=$35,407.07, Max Viol=0.336718 pu, ρ=10000.00
+Iter  31: Cost=$35,393.92, Max Viol=0.357427 pu, ρ=10000.00
+Iter  32: Cost=$35,374.71, Max Viol=0.379917 pu, ρ=10000.00
+Iter  33: Cost=$35,384.61, Max Viol=0.359028 pu, ρ=10000.00
+Iter  34: Cost=$35,366.34, Max Viol=0.350812 pu, ρ=10000.00
+Iter  35: Cost=$35,343.21, Max Viol=0.368500 pu, ρ=10000.00
+Iter  36: Cost=$35,335.55, Max Viol=0.384171 pu, ρ=10000.00
+Iter  37: Cost=$35,325.83, Max Viol=0.426458 pu, ρ=10000.00
+Iter  38: Cost=$35,315.49, Max Viol=0.460737 pu, ρ=10000.00
+Iter  39: Cost=$35,311.44, Max Viol=0.491805 pu, ρ=10000.00
+Iter  40: Cost=$35,309.17, Max Viol=0.527672 pu, ρ=10000.00
+Iter  41: Cost=$35,311.67, Max Viol=0.553182 pu, ρ=10000.00
+Iter  42: Cost=$35,314.62, Max Viol=0.583094 pu, ρ=10000.00
+Iter  43: Cost=$35,321.04, Max Viol=0.618957 pu, ρ=10000.00
+Iter  44: Cost=$35,322.93, Max Viol=0.620535 pu, ρ=10000.00
+Iter  45: Cost=$35,324.25, Max Viol=0.646301 pu, ρ=10000.00
+Iter  46: Cost=$35,337.38, Max Viol=0.663076 pu, ρ=10000.00
+Iter  47: Cost=$35,348.26, Max Viol=0.678229 pu, ρ=10000.00
+Iter  48: Cost=$35,354.50, Max Viol=0.690156 pu, ρ=10000.00
+Iter  49: Cost=$35,369.40, Max Viol=0.696485 pu, ρ=10000.00
+Iter  50: Cost=$35,380.44, Max Viol=0.702445 pu, ρ=10000.00
+
+Training stopped after 50 iterations.
+
+Generating 100 test samples...
+Testing on unseen samples...
+
+Inference time for 100 samples: 0.97 ms
+Average inference time: 0.0097 ms/sample
+
+======================================================================
+TEST SET PERFORMANCE
+======================================================================
+Base MVA: 100
+Average Generation Cost:  $35,949.00
+Max P Violation:          0.30865821 pu (30.8658 MW)
+Max Q Violation:          0.20733985 pu (20.7340 MVAr)
+Max Overall Violation:    0.30865821 pu
+Mean P Violation:         0.03197237 pu (3.1972 MW)
+Mean Q Violation:         0.01870557 pu (1.8706 MVAr)
+
+Voltage Statistics:
+  Mean: 0.9910 pu
+  Std:  0.0437 pu
+  Min:  0.9400 pu (System limit: 0.9400)
+  Max:  1.0600 pu (System limit: 1.0600)
+
+Total Generation: 1220.77 MW (average)
+
+Generating plots...
+
+==========================================================================================
+EXPERIMENT 2: IEEE CASE 118
+==========================================================================================
+
+======================================================================
+Running AC-OPF PDL Experiment: IEEE Case 118
+======================================================================
+
+Device: cuda
+Number of buses: 118
+Number of generators: 53
+Number of loads: 99
+
+Generating 25000 training samples...
+Initializing PDL model...
+
+Training until max violation < 0.01 (or max 50 outer iterations)...
+Inner iterations per phase: 250
+----------------------------------------------------------------------
+Iter   1: Cost=$120,164.83, Max Viol=3.997884 pu, ρ=1.00
+Iter   2: Cost=$124,492.64, Max Viol=4.568127 pu, ρ=2.00
+Iter   3: Cost=$121,109.21, Max Viol=2.897355 pu, ρ=4.00
+Iter   4: Cost=$120,572.01, Max Viol=1.345894 pu, ρ=4.00
+Iter   5: Cost=$120,672.48, Max Viol=1.065241 pu, ρ=8.00
+Iter   6: Cost=$116,835.76, Max Viol=1.220383 pu, ρ=16.00
+Iter   7: Cost=$119,250.67, Max Viol=1.127813 pu, ρ=32.00
+Iter   8: Cost=$113,663.25, Max Viol=1.015135 pu, ρ=64.00
+Iter   9: Cost=$118,963.81, Max Viol=0.686150 pu, ρ=128.00
+Iter  10: Cost=$116,945.92, Max Viol=0.607476 pu, ρ=256.00
+Iter  11: Cost=$116,093.07, Max Viol=0.527444 pu, ρ=512.00
+Iter  12: Cost=$117,743.39, Max Viol=0.374744 pu, ρ=1024.00
+Iter  13: Cost=$116,423.85, Max Viol=0.482879 pu, ρ=2048.00
+Iter  14: Cost=$116,753.67, Max Viol=0.676427 pu, ρ=4096.00
+Iter  15: Cost=$117,891.27, Max Viol=0.497977 pu, ρ=8192.00
+Iter  16: Cost=$116,630.27, Max Viol=0.437225 pu, ρ=10000.00
+Iter  17: Cost=$117,768.46, Max Viol=0.424800 pu, ρ=10000.00
+Iter  18: Cost=$117,776.13, Max Viol=0.421290 pu, ρ=10000.00
+Iter  19: Cost=$117,676.45, Max Viol=0.363374 pu, ρ=10000.00
+Iter  20: Cost=$117,672.10, Max Viol=0.340044 pu, ρ=10000.00
+Iter  21: Cost=$117,694.78, Max Viol=0.496374 pu, ρ=10000.00
+Iter  22: Cost=$117,710.68, Max Viol=0.403608 pu, ρ=10000.00
+Iter  23: Cost=$117,719.69, Max Viol=0.341213 pu, ρ=10000.00
+Iter  24: Cost=$117,693.39, Max Viol=0.321345 pu, ρ=10000.00
+Iter  25: Cost=$117,712.04, Max Viol=0.328889 pu, ρ=10000.00
+Iter  26: Cost=$117,725.53, Max Viol=0.305715 pu, ρ=10000.00
+Iter  27: Cost=$117,712.29, Max Viol=0.309003 pu, ρ=10000.00
+Iter  28: Cost=$117,760.72, Max Viol=0.377735 pu, ρ=10000.00
+Iter  29: Cost=$117,774.65, Max Viol=0.307648 pu, ρ=10000.00
+Iter  30: Cost=$117,788.85, Max Viol=0.293498 pu, ρ=10000.00
+Iter  31: Cost=$117,803.69, Max Viol=0.274411 pu, ρ=10000.00
+Iter  32: Cost=$117,813.21, Max Viol=0.273600 pu, ρ=10000.00
+Iter  33: Cost=$117,781.54, Max Viol=0.273096 pu, ρ=10000.00
+Iter  34: Cost=$117,890.42, Max Viol=0.271846 pu, ρ=10000.00
+Iter  35: Cost=$117,764.51, Max Viol=0.267630 pu, ρ=10000.00
+Iter  36: Cost=$117,793.02, Max Viol=0.276294 pu, ρ=10000.00
+Iter  37: Cost=$117,754.46, Max Viol=0.267730 pu, ρ=10000.00
+Iter  38: Cost=$117,764.48, Max Viol=0.263185 pu, ρ=10000.00
+Iter  39: Cost=$117,738.54, Max Viol=0.409142 pu, ρ=10000.00
+Iter  40: Cost=$118,046.34, Max Viol=0.445697 pu, ρ=10000.00
+Iter  41: Cost=$117,699.08, Max Viol=0.268949 pu, ρ=10000.00
+Iter  42: Cost=$117,695.23, Max Viol=0.287555 pu, ρ=10000.00
+Iter  43: Cost=$117,786.24, Max Viol=0.338070 pu, ρ=10000.00
+Iter  44: Cost=$117,729.59, Max Viol=0.293355 pu, ρ=10000.00
+Iter  45: Cost=$117,694.89, Max Viol=0.309041 pu, ρ=10000.00
+Iter  46: Cost=$117,647.63, Max Viol=0.281126 pu, ρ=10000.00
+Iter  47: Cost=$117,667.37, Max Viol=0.291348 pu, ρ=10000.00
+Iter  48: Cost=$117,638.17, Max Viol=0.347509 pu, ρ=10000.00
+Iter  49: Cost=$117,796.11, Max Viol=0.313653 pu, ρ=10000.00
+Iter  50: Cost=$117,627.46, Max Viol=0.325211 pu, ρ=10000.00
+
+Training stopped after 50 iterations.
+
+Generating 100 test samples...
+Testing on unseen samples...
+
+Inference time for 100 samples: 1.04 ms
+Average inference time: 0.0104 ms/sample
+
+======================================================================
+TEST SET PERFORMANCE
+======================================================================
+Base MVA: 100
+Average Generation Cost:  $119,873.82
+Max P Violation:          0.20216560 pu (20.2166 MW)
+Max Q Violation:          0.11323506 pu (11.3235 MVAr)
+Max Overall Violation:    0.20216560 pu
+Mean P Violation:         0.02403824 pu (2.4038 MW)
+Mean Q Violation:         0.00894985 pu (0.8950 MVAr)
+
+Voltage Statistics:
+  Mean: 0.9901 pu
+  Std:  0.0139 pu
+  Min:  0.9580 pu (System limit: 0.9400)
+  Max:  1.0283 pu (System limit: 1.0600)
+
+Total Generation: 4352.87 MW (average)
+
+Generating plots...
+
+Creating comparison visualizations...
+
+==========================================================================================
+COMPARATIVE RESULTS TABLE
+==========================================================================================
+    Case   Cost ($) Max Viol (pu) Max P (MW) Max Q (MVAr) Mean P (MW) Mean Q (MVAr) Train (s) Infer (ms)
+ Case 57  35,949.00      0.308658    30.8658      20.7340      3.1972        1.8706     452.5     0.0097
+Case 118 119,873.82      0.202166    20.2166      11.3235      2.4038        0.8950    1726.3     0.0104
+==========================================================================================
+
+COMPARISON WITH PAPER RESULTS (Table 3)
+------------------------------------------------------------------------------------------
+Paper Results (PDL):
+  Case 57:  Gap(%)=0.21(0.02), Max viol=0.01(0.00)
+  Case 118: Gap(%)=0.73(0.12), Max viol=0.04(0.01)
+
+Our Implementation:
+  Case 57: Max viol=0.3087 pu
+  Case 118: Max viol=0.2022 pu
+------------------------------------------------------------------------------------------
+
+
