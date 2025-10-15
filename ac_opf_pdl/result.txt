@@ -1,0 +1,153 @@
+==========================================================================================
+PDL FOR AC-OPTIMAL POWER FLOW: IEEE CASE 57 AND CASE 118 (PANDAPOWER)
+Replicating Results from Park & Van Hentenryck (2022)
+==========================================================================================
+
+Loading pandapower networks...
+Successfully loaded case57 and case118.
+Loading data from pandapower: case57
+Warning: Cost data not found or incomplete. Using random costs.
+Data loaded: 57 buses, 6 generators, 42 loads.
+Base MVA: 100
+Loading data from pandapower: case118
+Warning: Cost data not found or incomplete. Using random costs.
+Data loaded: 118 buses, 53 generators, 99 loads.
+Base MVA: 100
+
+==========================================================================================
+EXPERIMENT 1: IEEE CASE 57
+==========================================================================================
+
+======================================================================
+Running AC-OPF PDL Experiment: IEEE Case 57
+======================================================================
+
+Device: cuda
+Number of buses: 57
+Number of generators: 6
+Number of loads: 42
+
+Generating 25000 training samples...
+Initializing PDL model...
+
+Training for 10 outer iterations...
+Inner iterations per phase: 250
+----------------------------------------------------------------------
+Iter  1/10: Cost=$22,254.85, Max P viol=1.454899 pu, Max Q viol=1.312158 pu, ρ=1.00
+Iter  2/10: Cost=$27,345.94, Max P viol=0.940322 pu, Max Q viol=0.989778 pu, ρ=2.00
+Iter  3/10: Cost=$35,307.33, Max P viol=0.639114 pu, Max Q viol=0.786186 pu, ρ=4.00
+Iter  4/10: Cost=$38,211.01, Max P viol=0.452991 pu, Max Q viol=0.654387 pu, ρ=8.00
+Iter  5/10: Cost=$39,450.53, Max P viol=0.420877 pu, Max Q viol=0.545347 pu, ρ=16.00
+Iter  6/10: Cost=$39,571.05, Max P viol=0.382798 pu, Max Q viol=0.541305 pu, ρ=32.00
+Iter  7/10: Cost=$39,414.66, Max P viol=0.375177 pu, Max Q viol=0.526157 pu, ρ=64.00
+Iter  8/10: Cost=$39,331.40, Max P viol=0.372959 pu, Max Q viol=0.502788 pu, ρ=128.00
+Iter  9/10: Cost=$39,329.99, Max P viol=0.386862 pu, Max Q viol=0.495691 pu, ρ=256.00
+Iter 10/10: Cost=$39,344.75, Max P viol=0.372511 pu, Max Q viol=0.486344 pu, ρ=512.00
+
+Training completed in 80.89 seconds
+
+Generating 100 test samples...
+Testing on unseen samples...
+
+Inference time for 100 samples: 1.41 ms
+Average inference time: 0.0141 ms/sample
+
+======================================================================
+TEST SET PERFORMANCE
+======================================================================
+Base MVA: 100
+Average Generation Cost:  $39,496.99
+Max P Violation:          0.30819222 pu (30.8192 MW)
+Max Q Violation:          0.32591307 pu (32.5913 MVAr)
+Max Overall Violation:    0.32591307 pu
+Mean P Violation:         0.04229002 pu (4.2290 MW)
+Mean Q Violation:         0.02708881 pu (2.7089 MVAr)
+
+Voltage Statistics:
+  Mean: 0.9964 pu
+  Std:  0.0351 pu
+  Min:  0.9401 pu (System limit: 0.9400)
+  Max:  1.0573 pu (System limit: 1.0600)
+
+Total Generation: 1185.19 MW (average)
+
+Generating plots...
+
+==========================================================================================
+EXPERIMENT 2: IEEE CASE 118
+==========================================================================================
+
+======================================================================
+Running AC-OPF PDL Experiment: IEEE Case 118
+======================================================================
+
+Device: cuda
+Number of buses: 118
+Number of generators: 53
+Number of loads: 99
+
+Generating 25000 training samples...
+Initializing PDL model...
+
+Training for 10 outer iterations...
+Inner iterations per phase: 250
+----------------------------------------------------------------------
+Iter  1/10: Cost=$129,677.60, Max P viol=3.741438 pu, Max Q viol=3.444982 pu, ρ=1.00
+Iter  2/10: Cost=$126,892.81, Max P viol=3.051231 pu, Max Q viol=2.015610 pu, ρ=2.00
+Iter  3/10: Cost=$135,363.80, Max P viol=2.015110 pu, Max Q viol=1.368584 pu, ρ=4.00
+Iter  4/10: Cost=$127,399.89, Max P viol=1.697590 pu, Max Q viol=0.960341 pu, ρ=8.00
+Iter  5/10: Cost=$124,894.40, Max P viol=1.350434 pu, Max Q viol=0.837981 pu, ρ=16.00
+Iter  6/10: Cost=$125,012.25, Max P viol=1.128907 pu, Max Q viol=0.736700 pu, ρ=32.00
+Iter  7/10: Cost=$123,595.42, Max P viol=1.172544 pu, Max Q viol=0.642362 pu, ρ=64.00
+Iter  8/10: Cost=$124,848.55, Max P viol=0.896417 pu, Max Q viol=0.440456 pu, ρ=128.00
+Iter  9/10: Cost=$123,242.61, Max P viol=0.730546 pu, Max Q viol=0.289067 pu, ρ=256.00
+Iter 10/10: Cost=$122,533.42, Max P viol=0.707948 pu, Max Q viol=0.250399 pu, ρ=512.00
+
+Training completed in 329.50 seconds
+
+Generating 100 test samples...
+Testing on unseen samples...
+
+Inference time for 100 samples: 1.37 ms
+Average inference time: 0.0137 ms/sample
+
+======================================================================
+TEST SET PERFORMANCE
+======================================================================
+Base MVA: 100
+Average Generation Cost:  $123,437.96
+Max P Violation:          0.55604553 pu (55.6046 MW)
+Max Q Violation:          0.17315960 pu (17.3160 MVAr)
+Max Overall Violation:    0.55604553 pu
+Mean P Violation:         0.06082421 pu (6.0824 MW)
+Mean Q Violation:         0.01979036 pu (1.9790 MVAr)
+
+Voltage Statistics:
+  Mean: 0.9808 pu
+  Std:  0.0148 pu
+  Min:  0.9481 pu (System limit: 0.9400)
+  Max:  1.0219 pu (System limit: 1.0600)
+
+Total Generation: 4340.34 MW (average)
+
+Generating plots...
+
+Creating comparison visualizations...
+
+==========================================================================================
+COMPARATIVE RESULTS TABLE
+==========================================================================================
+    Case   Cost ($) Max Viol (pu) Max P (MW) Max Q (MVAr) Mean P (MW) Mean Q (MVAr) Train (s) Infer (ms)
+ Case 57  39,496.99      0.325913    30.8192      32.5913      4.2290        2.7089      80.9     0.0141
+Case 118 123,437.96      0.556046    55.6046      17.3160      6.0824        1.9790     329.5     0.0137
+==========================================================================================
+
+COMPARISON WITH PAPER RESULTS (Table 3)
+------------------------------------------------------------------------------------------
+Paper Results (PDL):
+  Case 57:  Gap(%)=0.21(0.02), Max viol=0.01(0.00)
+  Case 118: Gap(%)=0.73(0.12), Max viol=0.04(0.01)
+
+Our Implementation:
+  Case 57: Max viol=0.3259 pu
+  Case 118: Max viol=0.5560 pu
