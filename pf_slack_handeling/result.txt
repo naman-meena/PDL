@@ -1,0 +1,270 @@
+==========================================================================================
+PDL FOR AC-OPTIMAL POWER FLOW: IEEE CASE 57 AND CASE 118 (PANDAPOWER)
+Replicating Results from Park & Van Hentenryck (2022)
+==========================================================================================
+
+Loading pandapower networks...
+Successfully loaded case57 and case118.
+Loading data from pandapower: case57
+Warning: Cost data not found or incomplete. Using random costs.
+Data loaded: 57 buses, 6 generators, 42 loads.
+Base MVA: 100
+Loading data from pandapower: case118
+Warning: Cost data not found or incomplete. Using random costs.
+Data loaded: 118 buses, 53 generators, 99 loads.
+Base MVA: 100
+
+==========================================================================================
+EXPERIMENT 1: IEEE CASE 57
+==========================================================================================
+
+======================================================================
+Running AC-OPF PDL Experiment: IEEE Case 57
+======================================================================
+
+Device: cuda
+Number of buses: 57
+Number of generators: 6
+Number of loads: 42
+Slack bus: 0
+
+Generating 25000 training samples...
+Initializing PDL model...
+
+Training until max violation < 0.01 (or max 50 outer iterations)...
+Inner iterations per phase: 250
+----------------------------------------------------------------------
+Iter   1: Cost=$19,705.08, Max Viol=1.019013 pu, Slack V=0.9876 pu, ρ=1.00
+Iter   2: Cost=$29,617.09, Max Viol=0.767428 pu, Slack V=0.9834 pu, ρ=2.00
+Iter   3: Cost=$33,280.79, Max Viol=0.537944 pu, Slack V=1.0177 pu, ρ=4.00
+Iter   4: Cost=$33,662.42, Max Viol=0.493235 pu, Slack V=1.0260 pu, ρ=8.00
+Iter   5: Cost=$33,130.09, Max Viol=0.446214 pu, Slack V=1.0236 pu, ρ=16.00
+Iter   6: Cost=$33,167.33, Max Viol=0.435211 pu, Slack V=1.0243 pu, ρ=32.00
+Iter   7: Cost=$32,620.51, Max Viol=0.432754 pu, Slack V=1.0248 pu, ρ=64.00
+Iter   8: Cost=$32,648.67, Max Viol=0.387574 pu, Slack V=1.0266 pu, ρ=128.00
+Iter   9: Cost=$32,542.84, Max Viol=0.363074 pu, Slack V=1.0266 pu, ρ=256.00
+Iter  10: Cost=$32,276.18, Max Viol=0.358606 pu, Slack V=1.0273 pu, ρ=512.00
+Iter  11: Cost=$32,575.71, Max Viol=0.358828 pu, Slack V=1.0294 pu, ρ=1024.00
+Iter  12: Cost=$32,410.56, Max Viol=0.338320 pu, Slack V=1.0299 pu, ρ=2048.00
+Iter  13: Cost=$32,639.69, Max Viol=0.350501 pu, Slack V=1.0314 pu, ρ=4096.00
+Iter  14: Cost=$32,676.14, Max Viol=0.333816 pu, Slack V=1.0326 pu, ρ=8192.00
+Iter  15: Cost=$32,815.21, Max Viol=0.336550 pu, Slack V=1.0329 pu, ρ=10000.00
+Iter  16: Cost=$33,297.03, Max Viol=0.384311 pu, Slack V=1.0346 pu, ρ=10000.00
+Iter  17: Cost=$33,466.18, Max Viol=0.360196 pu, Slack V=1.0359 pu, ρ=10000.00
+Iter  18: Cost=$33,636.94, Max Viol=0.404627 pu, Slack V=1.0368 pu, ρ=10000.00
+Iter  19: Cost=$33,737.17, Max Viol=0.401224 pu, Slack V=1.0372 pu, ρ=10000.00
+Iter  20: Cost=$33,828.12, Max Viol=0.377476 pu, Slack V=1.0376 pu, ρ=10000.00
+Iter  21: Cost=$33,901.01, Max Viol=0.347501 pu, Slack V=1.0380 pu, ρ=10000.00
+Iter  22: Cost=$33,959.93, Max Viol=0.335241 pu, Slack V=1.0384 pu, ρ=10000.00
+Iter  23: Cost=$34,047.37, Max Viol=0.349864 pu, Slack V=1.0387 pu, ρ=10000.00
+Iter  24: Cost=$34,129.32, Max Viol=0.332209 pu, Slack V=1.0390 pu, ρ=10000.00
+Iter  25: Cost=$34,157.28, Max Viol=0.329941 pu, Slack V=1.0393 pu, ρ=10000.00
+Iter  26: Cost=$34,219.90, Max Viol=0.325467 pu, Slack V=1.0396 pu, ρ=10000.00
+Iter  27: Cost=$34,246.26, Max Viol=0.322958 pu, Slack V=1.0396 pu, ρ=10000.00
+Iter  28: Cost=$34,253.88, Max Viol=0.316169 pu, Slack V=1.0397 pu, ρ=10000.00
+Iter  29: Cost=$34,254.26, Max Viol=0.319818 pu, Slack V=1.0399 pu, ρ=10000.00
+Iter  30: Cost=$34,252.93, Max Viol=0.314756 pu, Slack V=1.0400 pu, ρ=10000.00
+Iter  31: Cost=$34,242.41, Max Viol=0.313773 pu, Slack V=1.0401 pu, ρ=10000.00
+Iter  32: Cost=$34,236.26, Max Viol=0.323663 pu, Slack V=1.0403 pu, ρ=10000.00
+Iter  33: Cost=$34,209.57, Max Viol=0.409727 pu, Slack V=1.0404 pu, ρ=10000.00
+Iter  34: Cost=$34,202.15, Max Viol=0.328867 pu, Slack V=1.0405 pu, ρ=10000.00
+Iter  35: Cost=$34,212.74, Max Viol=0.310250 pu, Slack V=1.0406 pu, ρ=10000.00
+Iter  36: Cost=$34,222.72, Max Viol=0.361430 pu, Slack V=1.0406 pu, ρ=10000.00
+Iter  37: Cost=$34,215.71, Max Viol=0.414782 pu, Slack V=1.0407 pu, ρ=10000.00
+Iter  38: Cost=$34,196.85, Max Viol=0.314104 pu, Slack V=1.0409 pu, ρ=10000.00
+Iter  39: Cost=$34,232.92, Max Viol=0.328409 pu, Slack V=1.0409 pu, ρ=10000.00
+Iter  40: Cost=$34,243.34, Max Viol=0.330554 pu, Slack V=1.0409 pu, ρ=10000.00
+Iter  41: Cost=$34,253.50, Max Viol=0.326041 pu, Slack V=1.0409 pu, ρ=10000.00
+Iter  42: Cost=$34,271.32, Max Viol=0.383997 pu, Slack V=1.0409 pu, ρ=10000.00
+Iter  43: Cost=$34,237.40, Max Viol=0.305514 pu, Slack V=1.0410 pu, ρ=10000.00
+Iter  44: Cost=$34,280.80, Max Viol=0.343152 pu, Slack V=1.0410 pu, ρ=10000.00
+Iter  45: Cost=$34,301.42, Max Viol=0.350226 pu, Slack V=1.0410 pu, ρ=10000.00
+Iter  46: Cost=$34,307.35, Max Viol=0.335942 pu, Slack V=1.0411 pu, ρ=10000.00
+Iter  47: Cost=$34,305.96, Max Viol=0.352702 pu, Slack V=1.0410 pu, ρ=10000.00
+Iter  48: Cost=$34,322.39, Max Viol=0.362261 pu, Slack V=1.0411 pu, ρ=10000.00
+Iter  49: Cost=$34,322.59, Max Viol=0.374142 pu, Slack V=1.0411 pu, ρ=10000.00
+Iter  50: Cost=$34,321.13, Max Viol=0.326552 pu, Slack V=1.0411 pu, ρ=10000.00
+
+Training stopped after 50 iterations.
+
+Generating 100 test samples...
+Testing on unseen samples...
+
+Inference time for 100 samples: 1.01 ms
+Average inference time: 0.0101 ms/sample
+
+======================================================================
+TEST SET PERFORMANCE
+======================================================================
+Base MVA: 100
+Slack Bus: 0
+Average Generation Cost:  $34,274.39
+Max P Violation:          0.17816535 pu (17.8165 MW)
+Max Q Violation:          0.17032152 pu (17.0322 MVAr)
+Max Overall Violation:    0.17816535 pu
+Mean P Violation:         0.03324987 pu (3.3250 MW)
+Mean Q Violation:         0.01916571 pu (1.9166 MVAr)
+
+Voltage Statistics (All Buses):
+  Mean: 0.9917 pu
+  Std:  0.0438 pu
+  Min:  0.9400 pu (System limit: 0.9400)
+  Max:  1.0600 pu (System limit: 1.0600)
+
+Slack Bus Voltage Statistics (Bus 0):
+  Mean: 1.0411 pu
+  Std:  0.0104 pu
+  Min:  1.0272 pu
+  Max:  1.0566 pu
+  Deviation from nominal (1.0 pu): 0.0411 pu
+
+Total Generation: 1196.85 MW (average)
+
+Generating plots...
+
+==========================================================================================
+EXPERIMENT 2: IEEE CASE 118
+==========================================================================================
+
+======================================================================
+Running AC-OPF PDL Experiment: IEEE Case 118
+======================================================================
+
+Device: cuda
+Number of buses: 118
+Number of generators: 53
+Number of loads: 99
+Slack bus: 68
+
+Generating 25000 training samples...
+Initializing PDL model...
+
+Training until max violation < 0.01 (or max 50 outer iterations)...
+Inner iterations per phase: 250
+----------------------------------------------------------------------
+Iter   1: Cost=$129,356.31, Max Viol=3.061036 pu, Slack V=1.0264 pu, ρ=1.00
+Iter   2: Cost=$133,013.33, Max Viol=3.009508 pu, Slack V=1.0265 pu, ρ=2.00
+Iter   3: Cost=$129,433.98, Max Viol=1.621707 pu, Slack V=1.0201 pu, ρ=4.00
+Iter   4: Cost=$128,504.73, Max Viol=1.115383 pu, Slack V=1.0170 pu, ρ=8.00
+Iter   5: Cost=$124,585.05, Max Viol=1.397255 pu, Slack V=1.0161 pu, ρ=16.00
+Iter   6: Cost=$127,158.85, Max Viol=0.805248 pu, Slack V=1.0160 pu, ρ=32.00
+Iter   7: Cost=$124,232.42, Max Viol=0.992192 pu, Slack V=1.0165 pu, ρ=64.00
+Iter   8: Cost=$126,290.08, Max Viol=0.682035 pu, Slack V=1.0165 pu, ρ=128.00
+Iter   9: Cost=$121,733.52, Max Viol=0.670729 pu, Slack V=1.0190 pu, ρ=256.00
+Iter  10: Cost=$126,419.86, Max Viol=0.503517 pu, Slack V=1.0187 pu, ρ=512.00
+Iter  11: Cost=$125,149.73, Max Viol=0.438963 pu, Slack V=1.0190 pu, ρ=1024.00
+Iter  12: Cost=$125,584.07, Max Viol=0.398502 pu, Slack V=1.0196 pu, ρ=2048.00
+Iter  13: Cost=$124,926.31, Max Viol=0.702873 pu, Slack V=1.0203 pu, ρ=4096.00
+Iter  14: Cost=$126,383.12, Max Viol=0.470195 pu, Slack V=1.0202 pu, ρ=8192.00
+Iter  15: Cost=$125,687.30, Max Viol=0.485268 pu, Slack V=1.0214 pu, ρ=10000.00
+Iter  16: Cost=$126,789.13, Max Viol=0.414172 pu, Slack V=1.0212 pu, ρ=10000.00
+Iter  17: Cost=$126,524.77, Max Viol=0.377749 pu, Slack V=1.0211 pu, ρ=10000.00
+Iter  18: Cost=$126,515.75, Max Viol=0.364724 pu, Slack V=1.0211 pu, ρ=10000.00
+Iter  19: Cost=$126,529.65, Max Viol=0.346358 pu, Slack V=1.0212 pu, ρ=10000.00
+Iter  20: Cost=$126,696.78, Max Viol=0.361900 pu, Slack V=1.0214 pu, ρ=10000.00
+Iter  21: Cost=$126,739.52, Max Viol=0.347819 pu, Slack V=1.0216 pu, ρ=10000.00
+Iter  22: Cost=$126,800.40, Max Viol=0.365042 pu, Slack V=1.0219 pu, ρ=10000.00
+Iter  23: Cost=$126,830.09, Max Viol=0.352806 pu, Slack V=1.0222 pu, ρ=10000.00
+Iter  24: Cost=$126,859.30, Max Viol=0.347825 pu, Slack V=1.0225 pu, ρ=10000.00
+Iter  25: Cost=$126,889.96, Max Viol=0.344289 pu, Slack V=1.0228 pu, ρ=10000.00
+Iter  26: Cost=$126,921.11, Max Viol=0.440365 pu, Slack V=1.0231 pu, ρ=10000.00
+Iter  27: Cost=$126,956.09, Max Viol=0.381602 pu, Slack V=1.0234 pu, ρ=10000.00
+Iter  28: Cost=$127,056.07, Max Viol=0.378972 pu, Slack V=1.0236 pu, ρ=10000.00
+Iter  29: Cost=$126,825.28, Max Viol=0.353547 pu, Slack V=1.0238 pu, ρ=10000.00
+Iter  30: Cost=$127,027.38, Max Viol=0.395216 pu, Slack V=1.0239 pu, ρ=10000.00
+Iter  31: Cost=$126,798.62, Max Viol=0.393656 pu, Slack V=1.0243 pu, ρ=10000.00
+Iter  32: Cost=$127,050.97, Max Viol=0.327790 pu, Slack V=1.0243 pu, ρ=10000.00
+Iter  33: Cost=$127,064.17, Max Viol=0.311265 pu, Slack V=1.0244 pu, ρ=10000.00
+Iter  34: Cost=$127,064.46, Max Viol=0.305182 pu, Slack V=1.0245 pu, ρ=10000.00
+Iter  35: Cost=$127,063.91, Max Viol=0.325639 pu, Slack V=1.0246 pu, ρ=10000.00
+Iter  36: Cost=$127,020.18, Max Viol=0.332038 pu, Slack V=1.0247 pu, ρ=10000.00
+Iter  37: Cost=$127,092.53, Max Viol=0.324269 pu, Slack V=1.0248 pu, ρ=10000.00
+Iter  38: Cost=$127,123.15, Max Viol=0.315146 pu, Slack V=1.0249 pu, ρ=10000.00
+Iter  39: Cost=$127,170.33, Max Viol=0.341877 pu, Slack V=1.0249 pu, ρ=10000.00
+Iter  40: Cost=$127,513.31, Max Viol=0.369534 pu, Slack V=1.0249 pu, ρ=10000.00
+Iter  41: Cost=$127,091.01, Max Viol=0.405076 pu, Slack V=1.0250 pu, ρ=10000.00
+Iter  42: Cost=$127,201.37, Max Viol=0.323203 pu, Slack V=1.0250 pu, ρ=10000.00
+Iter  43: Cost=$127,200.42, Max Viol=0.321164 pu, Slack V=1.0250 pu, ρ=10000.00
+Iter  44: Cost=$127,186.91, Max Viol=0.318511 pu, Slack V=1.0250 pu, ρ=10000.00
+Iter  45: Cost=$127,169.05, Max Viol=0.315034 pu, Slack V=1.0250 pu, ρ=10000.00
+Iter  46: Cost=$127,173.76, Max Viol=0.312263 pu, Slack V=1.0250 pu, ρ=10000.00
+Iter  47: Cost=$127,216.71, Max Viol=0.359088 pu, Slack V=1.0250 pu, ρ=10000.00
+Iter  48: Cost=$126,930.10, Max Viol=0.351326 pu, Slack V=1.0251 pu, ρ=10000.00
+Iter  49: Cost=$127,189.13, Max Viol=0.300999 pu, Slack V=1.0250 pu, ρ=10000.00
+Iter  50: Cost=$127,225.16, Max Viol=0.309411 pu, Slack V=1.0250 pu, ρ=10000.00
+
+Training stopped after 50 iterations.
+
+Generating 100 test samples...
+Testing on unseen samples...
+
+Inference time for 100 samples: 0.96 ms
+Average inference time: 0.0096 ms/sample
+
+======================================================================
+TEST SET PERFORMANCE
+======================================================================
+Base MVA: 100
+Slack Bus: 68
+Average Generation Cost:  $123,910.58
+Max P Violation:          0.18570140 pu (18.5701 MW)
+Max Q Violation:          0.10048173 pu (10.0482 MVAr)
+Max Overall Violation:    0.18570140 pu
+Mean P Violation:         0.02183000 pu (2.1830 MW)
+Mean Q Violation:         0.00854607 pu (0.8546 MVAr)
+
+Voltage Statistics (All Buses):
+  Mean: 0.9892 pu
+  Std:  0.0134 pu
+  Min:  0.9577 pu (System limit: 0.9400)
+  Max:  1.0270 pu (System limit: 1.0600)
+
+Slack Bus Voltage Statistics (Bus 68):
+  Mean: 1.0250 pu
+  Std:  0.0004 pu
+  Min:  1.0237 pu
+  Max:  1.0259 pu
+  Deviation from nominal (1.0 pu): 0.0250 pu
+
+Total Generation: 4161.89 MW (average)
+
+Generating plots...
+
+Creating comparison visualizations...
+
+==============================================================================================================
+COMPARATIVE RESULTS TABLE
+==============================================================================================================
+    Case  Slack Bus  Slack V (pu)   Cost ($) Max Viol (pu) Max P (MW) Max Q (MVAr) Train (s) Infer (ms)
+ Case 57          0 1.0411±0.0104  34,274.39      0.178165    17.8165      17.0322     460.1     0.0101
+Case 118         68 1.0250±0.0004 123,910.58      0.185701    18.5701      10.0482    1771.1     0.0096
+==============================================================================================================
+
+SLACK BUS VOLTAGE ANALYSIS
+--------------------------------------------------------------------------------------------------------------
+Case 57:
+  Slack Bus ID: 0
+  Mean Voltage: 1.0411 pu
+  Std Deviation: 0.0104 pu
+  Range: [1.0272, 1.0566] pu
+  Deviation from nominal (1.0 pu): 0.0411 pu (4.11%)
+
+Case 118:
+  Slack Bus ID: 68
+  Mean Voltage: 1.0250 pu
+  Std Deviation: 0.0004 pu
+  Range: [1.0237, 1.0259] pu
+  Deviation from nominal (1.0 pu): 0.0250 pu (2.50%)
+
+--------------------------------------------------------------------------------------------------------------
+
+COMPARISON WITH PAPER RESULTS (Table 3)
+--------------------------------------------------------------------------------------------------------------
+Paper Results (PDL):
+  Case 57:  Gap(%)=0.21(0.02), Max viol=0.01(0.00)
+  Case 118: Gap(%)=0.73(0.12), Max viol=0.04(0.01)
+
+Our Implementation:
+  Case 57: Max viol=0.1782 pu
+  Case 118: Max viol=0.1857 pu
+--------------------------------------------------------------------------------------------------------------
