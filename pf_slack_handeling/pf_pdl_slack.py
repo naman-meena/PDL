@@ -13,12 +13,9 @@ from pandapower.pypower.makeYbus import makeYbus
 import warnings
 warnings.filterwarnings("ignore")
 
-
+# Extracting data from pandapower
 def get_pandapower_data(net, case_name):
-    """
-    Extracts system data from a pandapower network object
-    and formats it for the PDL model.
-    """
+    
     print(f"Loading data from pandapower: {case_name}")
 
 
@@ -33,9 +30,7 @@ def get_pandapower_data(net, case_name):
         print("Running diagnostic to build ppc...")
         pp.diagnostic(net)
 
-    # Now, net._ppc should exist
     ppc = net._ppc
-
 
     baseMVA = ppc['baseMVA']
     bus, gen, branch = ppc['bus'], ppc['gen'], ppc['branch']
@@ -44,18 +39,15 @@ def get_pandapower_data(net, case_name):
     Ybus, Yf, Yt = makeYbus(baseMVA, bus, branch)
     Y_bus = Ybus.toarray()
 
-    # --- Get system dimensions ---
     n_buses = net.bus.shape[0]
     n_generators = net.gen.shape[0]
     n_loads = net.load.shape[0]
-
 
     gen_buses = net.gen.bus.values.tolist()
 
     base_P_demand = np.zeros(n_buses)
     base_Q_demand = np.zeros(n_buses)
 
-    # Sum loads at each bus
     for _, load in net.load.iterrows():
         bus_idx = load.bus
         base_P_demand[bus_idx] += load.p_mw
@@ -64,6 +56,7 @@ def get_pandapower_data(net, case_name):
     base_P_demand_pu = base_P_demand / baseMVA
     base_Q_demand_pu = base_Q_demand / baseMVA
 
+    # Get generator cost coefficients (in p.u.) -- though not used in loss
     if net.poly_cost.shape[0] == n_generators:
         costs = net.poly_cost[net.poly_cost.et == 'gen'].sort_values(by='element')
         c2 = costs.cp2_eur_per_mw2.values
@@ -76,7 +69,6 @@ def get_pandapower_data(net, case_name):
         c0_pu = c0
 
     else:
-        # Fallback if cost data is missing
         print("Warning: Cost data not found or incomplete. Using random costs.")
         c2_pu = np.random.uniform(0.005, 0.02, n_generators) * (baseMVA**2)
         c1_pu = np.random.uniform(15.0, 35.0, n_generators) * baseMVA
@@ -84,7 +76,6 @@ def get_pandapower_data(net, case_name):
 
     cost_coeffs = {'c2': c2_pu, 'c1': c1_pu, 'c0': c0_pu}
 
-    # --- Get generator limits (in p.u.) ---
     gen_limits = {
         'P_min': net.gen.min_p_mw.values / baseMVA,
         'P_max': net.gen.max_p_mw.values / baseMVA,
@@ -120,11 +111,10 @@ def get_pandapower_data(net, case_name):
 
 
 
-
+# creating load scenarios for training and testing
 def generate_load_scenarios(system_data, n_samples, load_variation=0.3):
     """Generate load scenarios with variations based on pandapower base loads"""
     n_buses = system_data['n_buses']
-    # Get the base demand vectors (shape n_buses)
     base_P = system_data['base_P_demand_pu']
     base_Q = system_data['base_Q_demand_pu']
 
@@ -148,9 +138,8 @@ def generate_load_scenarios(system_data, n_samples, load_variation=0.3):
 
     return P_demand, Q_demand
 
-
-class ACOPFPrimalNet(nn.Module):
-    """Primal network for AC-OPF"""
+# Primal network 
+class ACPFPrimalNet(nn.Module):
     def __init__(self, n_buses, n_generators, hidden_dim=256):
         super().__init__()
         self.n_buses = n_buses
@@ -213,9 +202,8 @@ class ACOPFPrimalNet(nn.Module):
 
         return Pg, Qg, V, theta
 
-
-class ACOPFDualNet(nn.Module):
-    """Dual network for AC-OPF"""
+# Dual network
+class ACPFDualNet(nn.Module):
     def __init__(self, n_buses, hidden_dim=256):
         super().__init__()
 
@@ -235,9 +223,8 @@ class ACOPFDualNet(nn.Module):
         return self.net(x)
 
 
-
-class PDL_ACOPF:
-    """Primal-Dual Learning for AC-OPF"""
+# primal dual learning class -- main class
+class PDL_ACPF:
 
     def __init__(self, system_data, rho_init=1.0, rho_max=10000,
                  alpha=2.0, tau=0.5, device='cpu'):
@@ -261,16 +248,16 @@ class PDL_ACOPF:
         self.alpha = alpha
         self.tau = tau
 
-        self.primal_net = ACOPFPrimalNet(self.n_buses, self.n_generators).to(device)
-        self.dual_net = ACOPFDualNet(self.n_buses).to(device)
+        self.primal_net = ACPFPrimalNet(self.n_buses, self.n_generators).to(device)
+        self.dual_net = ACPFDualNet(self.n_buses).to(device)
 
         self.primal_optimizer = optim.Adam(self.primal_net.parameters(), lr=2e-4)
         self.dual_optimizer = optim.Adam(self.dual_net.parameters(), lr=2e-4)
 
         self.history = defaultdict(list)
 
+    # Compute power balance violations
     def compute_power_balance(self, Pg, Qg, V, theta, P_demand, Q_demand):
-        """Compute power balance violations"""
         batch_size = V.shape[0]
 
         P_inj = torch.zeros(batch_size, self.n_buses, device=self.device, dtype=torch.float32)
@@ -281,11 +268,9 @@ class PDL_ACOPF:
             P_inj[:, bus] += Pg[:, idx]
             Q_inj[:, bus] += Qg[:, idx]
 
-        # Subtract demand (P_demand, Q_demand are p.u.)
         P_inj -= P_demand
         Q_inj -= Q_demand
 
-        # Compute actual power flow using AC equations
         V_complex = V * torch.exp(1j * theta)
 
         I_complex = torch.matmul(V_complex, self.Y_bus.T) # (batch, n_buses) * (n_buses, n_buses) -> (batch, n_buses)
@@ -300,25 +285,25 @@ class PDL_ACOPF:
 
         return P_viol, Q_viol
 
-    def compute_cost(self, Pg):
-        """Compute generation cost (using p.u. cost coefficients)"""
-        c2 = torch.tensor(self.cost_coeffs['c2'], device=self.device, dtype=torch.float32).unsqueeze(0)
-        c1 = torch.tensor(self.cost_coeffs['c1'], device=self.device, dtype=torch.float32).unsqueeze(0)
-        c0 = torch.tensor(self.cost_coeffs['c0'], device=self.device, dtype=torch.float32).unsqueeze(0)
+    # def compute_cost(self, Pg):
+    #     """Compute generation cost (using p.u. cost coefficients)"""
+    #     c2 = torch.tensor(self.cost_coeffs['c2'], device=self.device, dtype=torch.float32).unsqueeze(0)
+    #     c1 = torch.tensor(self.cost_coeffs['c1'], device=self.device, dtype=torch.float32).unsqueeze(0)
+    #     c0 = torch.tensor(self.cost_coeffs['c0'], device=self.device, dtype=torch.float32).unsqueeze(0)
 
-        # Pg is already in p.u.
-        cost = torch.sum(c2 * Pg**2 + c1 * Pg + c0, dim=1)
-        return cost.mean()
+    #     # Pg is already in p.u.
+    #     cost = torch.sum(c2 * Pg**2 + c1 * Pg + c0, dim=1)
+    #     return cost.mean()
 
     def primal_loss(self, Pg, Qg, V, theta, P_demand, Q_demand, multipliers):
         """Primal loss for Power Flow (PF): Lagrangian + penalty (NO COST)"""
         # Generation cost (still computed for logging, but not used in loss)
-        cost = self.compute_cost(Pg)
+        # cost = self.compute_cost(Pg)
 
-        # Power balance violations
+        
         P_viol, Q_viol = self.compute_power_balance(Pg, Qg, V, theta, P_demand, Q_demand)
 
-        # Multipliers
+        
         lambda_P = multipliers[:, :self.n_buses]
         lambda_Q = multipliers[:, self.n_buses:]
 
@@ -334,7 +319,7 @@ class PDL_ACOPF:
         loss = lagrangian + penalty
         # ---
 
-        return loss, cost
+        return loss
 
     def dual_loss(self, multipliers, multipliers_old, Pg, Qg, V, theta, P_demand, Q_demand):
         """Dual loss: match ALM update rule"""
@@ -350,8 +335,8 @@ class PDL_ACOPF:
 
         return loss
 
+    # training for one epoch
     def train_epoch(self, P_demand_batch, Q_demand_batch, inner_iters=250):
-        """Train for one outer iteration"""
 
         # Primal learning
         primal_losses = []
@@ -365,14 +350,14 @@ class PDL_ACOPF:
             )
             multipliers = self.dual_net(P_demand_batch, Q_demand_batch).detach()
 
-            loss, cost = self.primal_loss(Pg, Qg, V, theta, P_demand_batch, Q_demand_batch, multipliers)
+            loss = self.primal_loss(Pg, Qg, V, theta, P_demand_batch, Q_demand_batch, multipliers)
             loss.backward()
             self.primal_optimizer.step()
 
             primal_losses.append(loss.item())
-            costs.append(cost.item())
+            # costs.append(cost.item())
 
-        dual_net_old = ACOPFDualNet(self.n_buses).to(self.device)
+        dual_net_old = ACPFDualNet(self.n_buses).to(self.device)
         dual_net_old.load_state_dict(self.dual_net.state_dict())
 
         # Dual learning
@@ -637,11 +622,10 @@ def plot_solution_quality(Pg, Qg, V, theta, P_viol, Q_viol, case_name, baseMVA, 
 
 
 
-def run_acopf_experiment(case_name, system_data, n_train=25000, n_test=100,
+def run_acpf_experiment(case_name, system_data, n_train=25000, n_test=100,
                          max_outer_iters=500, convergence_threshold=1e-2, inner_iters=250):
-    """Run AC-OPF experiment"""
     print(f"\n{'='*70}")
-    print(f"Running AC-OPF PDL Experiment: {case_name}")
+    print(f"Running AC-PF PDL Experiment: {case_name}")
     print(f"{'='*70}\n")
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -659,7 +643,7 @@ def run_acopf_experiment(case_name, system_data, n_train=25000, n_test=100,
 
     # Initialize PDL
     print("Initializing PDL model...")
-    pdl = PDL_ACOPF(
+    pdl = PDL_ACPF(
         system_data=system_data,
         rho_init=1.0,
         rho_max=10000,
@@ -717,7 +701,7 @@ def run_acopf_experiment(case_name, system_data, n_train=25000, n_test=100,
     with torch.no_grad():
         P_viol, Q_viol = pdl.compute_power_balance(Pg, Qg, V, theta,
                                                    P_test_tensor, Q_test_tensor)
-        test_cost = pdl.compute_cost(Pg)
+        # test_cost = pdl.compute_cost(Pg)
 
     max_P_viol_test_pu = torch.max(torch.abs(P_viol)).item()
     max_Q_viol_test_pu = torch.max(torch.abs(Q_viol)).item()
@@ -740,7 +724,7 @@ def run_acopf_experiment(case_name, system_data, n_train=25000, n_test=100,
     print(f"{'='*70}")
     print(f"Base MVA: {baseMVA}")
     print(f"Slack Bus: {pdl.slack_bus}")
-    print(f"Average Generation Cost:  ${test_cost.item():,.2f}")
+    # print(f"Average Generation Cost:  ${test_cost.item():,.2f}")
     print(f"Max P Violation:          {max_P_viol_test_pu:.8f} pu ({max_P_viol_test_pu*baseMVA:.4f} MW)")
     print(f"Max Q Violation:          {max_Q_viol_test_pu:.8f} pu ({max_Q_viol_test_pu*baseMVA:.4f} MVAr)")
     print(f"Max Overall Violation:    {max_viol_test_pu:.8f} pu")
@@ -780,7 +764,7 @@ def run_acopf_experiment(case_name, system_data, n_train=25000, n_test=100,
         'max_viol_pu': max_viol_test_pu,
         'mean_P_viol_pu': mean_P_viol_test_pu,
         'mean_Q_viol_pu': mean_Q_viol_test_pu,
-        'cost': test_cost.item(),
+        # 'cost': test_cost.item(),
         'V_mean': V_mean,
         'V_std': V_std,
         'V_min': V_min_val,
@@ -967,7 +951,7 @@ if __name__ == "__main__":
     print("\n" + "="*90)
     print("EXPERIMENT 1: IEEE CASE 57")
     print("="*90)
-    pdl_57, fig1_57, fig2_57, results_57 = run_acopf_experiment(
+    pdl_57, fig1_57, fig2_57, results_57 = run_acpf_experiment(
         case_name="IEEE Case 57",
         system_data=system_data_57,
         n_train=25000,
@@ -984,7 +968,7 @@ if __name__ == "__main__":
     print("\n" + "="*90)
     print("EXPERIMENT 2: IEEE CASE 118")
     print("="*90)
-    pdl_118, fig1_118, fig2_118, results_118 = run_acopf_experiment(
+    pdl_118, fig1_118, fig2_118, results_118 = run_acpf_experiment(
         case_name="IEEE Case 118",
         system_data=system_data_118,
         n_train=25000,
@@ -1004,22 +988,7 @@ if __name__ == "__main__":
     # Print comparison table
     print_comparison_table(all_results)
 
-    # Final summary
-    print("\n" + "="*90)
-    print("SUMMARY")
-    print("="*90)
-    print("\nKey Findings:")
-    print("1. PDL successfully loaded real network data from pandapower")
-    print("2. Model trained on p.u. values from a standard AC-OPF case")
-    print("3. Constraint violations are minimized through primal-dual learning")
-    print("4. Inference is extremely fast (< 1ms per instance)")
-    print("\nNote: This is a simplified implementation. For exact paper replication:")
-    print("- Implement all AC-OPF constraints (line limits, angle differences)")
-    print("- The current model only enforces power balance and generator/voltage limits")
-    print("- Use exact hyperparameters from paper")
-    print("- Run multiple random seeds and report statistics")
-    print("="*90)
 
     plt.show()
 
-    print("\n✓ All experiments completed successfully!")
+    print("\n All experiments completed successfully!")
