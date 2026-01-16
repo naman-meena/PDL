@@ -756,28 +756,51 @@ def run_acpf_experiment(case_name, system_data, n_train=25000, n_test=100,
 # -------------------------------------------------
     V_nr_all = []
     theta_nr_all = []
-    nr_iters_per_sample = []  # Track NR iterations
-    nr_times_per_sample = []  # Track NR solve times
+    nr_iters_per_sample = []  # Track NR iterations (hotstart)
+    nr_times_per_sample = []  # Track NR solve times (hotstart)
+    nr_iters_normal_per_sample = []  # Track NR iterations (normal)
+    nr_times_normal_per_sample = []  # Track NR solve times (normal)
 
     for i in range(n_test):
-        net_tmp = copy.deepcopy(system_data['net'])  # Use copy.deepcopy instead of net.deepcopy()
-
+        # --- Normal NR (flat start) ---
+        net_normal = copy.deepcopy(system_data['net'])
         # apply loads
+        for idx, load in net_normal.load.iterrows():
+            net_normal.load.at[idx, 'p_mw'] = P_test[i, load.bus] * baseMVA
+            net_normal.load.at[idx, 'q_mvar'] = Q_test[i, load.bus] * baseMVA
+        # Do NOT set generator p_mw or voltages (let NR use default flat start)
+        nr_start_time = time.time()
+        pp.runpp(
+            net_normal,
+            init='flat',
+            calculate_voltage_angles=True,
+            enforce_q_limits=False,
+            enforce_v_limits=False
+        )
+        nr_solve_time = time.time() - nr_start_time
+        # Extract NR iterations
+        if hasattr(net_normal, '_ppc') and 'et' in net_normal._ppc:
+            try:
+                nr_iters_normal = net_normal._ppc.get('iterations', 3)
+            except:
+                nr_iters_normal = 3
+        else:
+            nr_iters_normal = 3
+        nr_iters_normal_per_sample.append(nr_iters_normal)
+        nr_times_normal_per_sample.append(nr_solve_time)
+
+        # --- Hotstart NR (PDL) ---
+        net_tmp = copy.deepcopy(system_data['net'])
         for idx, load in net_tmp.load.iterrows():
             net_tmp.load.at[idx, 'p_mw'] = P_test[i, load.bus] * baseMVA
             net_tmp.load.at[idx, 'q_mvar'] = Q_test[i, load.bus] * baseMVA
-
-        # apply generator active power from PDL
         for g, bus in enumerate(pdl.gen_buses):
             net_tmp.gen.at[g, 'p_mw'] = Pg[i, g].item() * baseMVA
-
-    # 🔥 HOT START: overwrite NR initial guess with PDL voltages
+        # Hotstart: set voltages/angles
         net_tmp.res_bus.vm_pu.values[:] = V[i].detach().cpu().numpy()
         net_tmp.res_bus.va_degree.values[:] = np.degrees(
             theta[i].detach().cpu().numpy()
         )
-
-    # run Newton–Raphson and measure time/iterations
         nr_start_time = time.time()
         pp.runpp(
             net_tmp,
@@ -787,23 +810,17 @@ def run_acpf_experiment(case_name, system_data, n_train=25000, n_test=100,
             enforce_v_limits=False
         )
         nr_solve_time = time.time() - nr_start_time
-
         V_nr_all.append(net_tmp.res_bus.vm_pu.values)
         theta_nr_all.append(
             np.deg2rad(net_tmp.res_bus.va_degree.values)
         )
-
-        # Extract NR convergence info from pandapower results
-        # Note: pandapower stores iteration info in the internal solver state
         if hasattr(net_tmp, '_ppc') and 'et' in net_tmp._ppc:
-            # Try to extract iterations (may vary by pandapower version)
             try:
-                nr_iters = net_tmp._ppc.get('iterations', 3)  # Default to 3 if not available
+                nr_iters = net_tmp._ppc.get('iterations', 3)
             except:
                 nr_iters = 3
         else:
             nr_iters = 3
-
         nr_iters_per_sample.append(nr_iters)
         nr_times_per_sample.append(nr_solve_time)
 
@@ -812,6 +829,8 @@ def run_acpf_experiment(case_name, system_data, n_train=25000, n_test=100,
 
     nr_avg_iters = np.mean(nr_iters_per_sample)
     nr_avg_time = np.mean(nr_times_per_sample)
+    nr_avg_iters_normal = np.mean(nr_iters_normal_per_sample)
+    nr_avg_time_normal = np.mean(nr_times_normal_per_sample)
 
     # --- Compute NR power balance violations ---
     P_viol_nr_list = []
@@ -884,7 +903,16 @@ def run_acpf_experiment(case_name, system_data, n_train=25000, n_test=100,
     print(f"Mean P Violation:         {mean_P_viol_test_pu:.8f} pu ({mean_P_viol_test_pu*baseMVA:.4f} MW)")
     print(f"Mean Q Violation:         {mean_Q_viol_test_pu:.8f} pu ({mean_Q_viol_test_pu*baseMVA:.4f} MVAr)")
 
-    print("PDL vs NR Comparison:")
+    print(f"\nNewton-Raphson Iterations (Test Set):")
+    print(f"  Normal NR (flat start):   {nr_avg_iters_normal:.2f} avg iterations")
+    print(f"  Hotstart NR (PDL init):   {nr_avg_iters:.2f} avg iterations")
+
+    total_time_normal_nr = n_test * nr_avg_time_normal
+    total_time_pdl_hotstart = training_time + n_test * nr_avg_time
+    print(f"\nTotal Time Comparison (Test Set):")
+    print(f"  Normal NR (test only):         {total_time_normal_nr:.2f} s")
+    print(f"  PDL training + NR hotstart:    {total_time_pdl_hotstart:.2f} s")
+    print(f"PDL vs NR Comparison:")
     print(f"Voltage RMSE: {voltage_rmse:.6e} pu")
     print(f"Voltage Max Error: {voltage_max:.6e} pu")
     print(f"Angle RMSE: {angle_rmse:.6e} deg")
@@ -934,8 +962,10 @@ def run_acpf_experiment(case_name, system_data, n_train=25000, n_test=100,
         'training_time': training_time,
         'pdl_convergence_iters': pdl_convergence_iters,
         'nr_avg_convergence_iters': nr_avg_iters,
+        'nr_avg_convergence_iters_normal': nr_avg_iters_normal,
         'inference_time_per_sample': inference_time / n_test,
         'nr_avg_inference_time_per_sample': nr_avg_time,
+        'nr_avg_inference_time_per_sample_normal': nr_avg_time_normal,
         'max_P_viol_pu': max_P_viol_test_pu,
         'max_Q_viol_pu': max_Q_viol_test_pu,
         'max_viol_pu': max_viol_test_pu,
@@ -949,7 +979,9 @@ def run_acpf_experiment(case_name, system_data, n_train=25000, n_test=100,
         'slack_V_min': slack_V_min,
         'slack_V_max': slack_V_max,
         'Pg_total_mw': Pg_total_mw,
-        'baseMVA': baseMVA
+        'baseMVA': baseMVA,
+        'total_time_normal_nr': total_time_normal_nr,
+        'total_time_pdl_hotstart': total_time_pdl_hotstart
     }
 
     return pdl, fig1, fig2, results
